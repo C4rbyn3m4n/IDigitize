@@ -16,17 +16,18 @@ class mainWindow():
         pass
 
     def commandSignOut(self):
-        self.nameVar = tk.StringVar(self.frameMain)
-        self.nameVar.set("Name")
-        self.IDVar = tk.StringVar(self.frameMain)
-        self.IDVar.set("ID")
-        self.buttonSignIn.destroy()
-        self.buttonSignOut.destroy()
+        self.varName = tk.StringVar(self.frameMain)
+        self.varName.set("Name")
+        self.varID = tk.StringVar(self.frameMain)
+        self.varID.set("ID")
+        self.varSignIn = tk.StringVar(self.frameMain)
+        self.varSignIn.set("Please swipe your student ID card")
+        self.frameMain.pack_forget()
 
-        self.frameSignOut = tk.Frame(self.frameMain)
-        tk.Label(self.frameSignOut, text="Please swipe your student ID").pack()
-        tk.Entry(self.frameSignOut, text=self.nameVar, justify="center").pack()
-        tk.Entry(self.frameSignOut, text=self.IDVar, justify="center").pack()
+        self.frameSignOut = tk.Frame(self.master)
+        tk.Label(self.frameSignOut, text=self.varSignIn.get()).pack()
+        tk.Entry(self.frameSignOut, text=self.varName, justify="center").pack()
+        tk.Entry(self.frameSignOut, text=self.varID, justify="center").pack()
         self.frameSignOutButtons = tk.Frame(self.frameSignOut)
         tk.Button(self.frameSignOutButtons, text="Submit", command=self.commandSubmit).pack(side=tk.LEFT)
         tk.Button(self.frameSignOutButtons, text="Cancel", command=self.commandCancel).pack(side=tk.RIGHT)
@@ -35,14 +36,16 @@ class mainWindow():
 
         while not self.getSwipe():
             pass
-        # self.nameVar.set(self.nameScanned)
-        # self.IDVar.set(self.IDScanned)
+        # self.varName.set(self.nameScanned)
+        # self.varID.set(self.IDScanned)
 
     def commandSubmit(self):
         pass
 
     def commandCancel(self):
-        pass
+        self.frameSignOut.destroy()
+        self.frameMain.pack()
+
 
     def getSwipe(self):
         # while not self.test:
