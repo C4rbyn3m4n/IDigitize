@@ -21,6 +21,10 @@ class mainWindow():
         self.varFinalName = tk.StringVar(self.frameMain)
         self.varFinalID = tk.StringVar(self.frameMain)
 
+        self.varName.set("Name")
+        self.varID.set("ID")
+        self.varSignIn.set("Please swipe your student ID card")
+
 
     def commandSignIn(self):
         # hides the main class buttons
@@ -30,9 +34,7 @@ class mainWindow():
 
     def commandSignOut(self):
         # set up variables for the Sign out window
-        self.varName.set("Name")
-        self.varID.set("ID")
-        self.varSignIn.set("Please swipe your student ID card")
+
         # hide the main class buttons
         self.frameMain.pack_forget()
 
@@ -62,9 +64,19 @@ class windowSignOut():
         # self.varID.set(self.IDScanned)
 
     def commandSubmit(self):
-        pass
+        self.parent.varFinalID.set(self.parent.varID.get())
+        self.parent.varFinalName.set(self.parent.varName.get())
+
+        # the rest of the sign out code goes here
+        #
+        #
+        #
 
     def commandCancel(self):
+        # clear final variables
+        self.parent.varFinalID.set("")
+        self.parent.varFinalName.set("")
+
         self.frameSignOut.destroy()
         self.parent.frameMain.pack()
 
@@ -91,10 +103,54 @@ class windowSignIn():
         self.parent.varFinalID.set(self.parent.varID.get())
         self.parent.varFinalName.set(self.parent.varName.get())
 
+        print(self.parent.varFinalID.get())
+        print(self.parent.varFinalName.get())
+
+        self.frameSignIn.pack_forget()
+        self.selectTeacherWindow = windowClassSelect(self)
+
 
     def commandCancel(self):
+        # Clear final variables
+        self.parent.varFinalID.set("")
+        self.parent.varFinalName.set("")
         self.frameSignIn.destroy()
         self.parent.frameMain.pack()
+
+class windowClassSelect():
+    def __init__(self, parent):
+        self.parent = parent
+
+        self.frameClassSelect = tk.Frame(self.parent.parent.master)
+
+        self.varDefaultClass = tk.StringVar(self.frameClassSelect)
+        self.varDefaultClass.set("Select a Class")
+        self.classes = self.getClasses()
+        self.menuClasses = tk.OptionMenu(self.frameClassSelect, self.varDefaultClass, *self.classes, command=self.commandShowTeachers)
+        self.menuClasses.pack()
+
+
+
+        self.frameClassSelect.pack()
+
+    def commandShowTeachers(self, name):
+        self.varDefaultTeacher = tk.StringVar(self.frameClassSelect)
+        self.varDefaultTeacher.set("Select a Teacher")
+        print(self.varDefaultClass.get())
+        self.teachers = self.getTeachers(self.varDefaultClass.get())
+        print(self.teachers)
+        self.menuTeachers = tk.OptionMenu(self.frameClassSelect, self.varDefaultTeacher, *self.teachers)
+        self.menuTeachers.pack()
+
+
+    def getClasses(self):
+        return ["Calc", "English", "Science"]
+
+    def getTeachers(self, selectedClass):
+        if selectedClass == "Calc":
+            return ["none", "none"]
+        else:
+            return ["one", "two"]
 
 
 
