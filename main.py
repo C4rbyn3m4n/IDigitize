@@ -18,25 +18,28 @@ class mainWindow():
         self.varID = tk.StringVar(self.frameMain)
         self.varName = tk.StringVar(self.frameMain)
 
+        self.varFinalName = tk.StringVar(self.frameMain)
+        self.varFinalID = tk.StringVar(self.frameMain)
+
 
     def commandSignIn(self):
-        pass
+        # hides the main class buttons
+        self.frameMain.pack_forget()
+
+        self.signinWindow = windowSignIn(self)
 
     def commandSignOut(self):
-
+        # set up variables for the Sign out window
         self.varName.set("Name")
-
         self.varID.set("ID")
-
         self.varSignIn.set("Please swipe your student ID card")
+        # hide the main class buttons
         self.frameMain.pack_forget()
 
         self.signoutWindow = windowSignOut(self)
 
-class windowSignIn():
-    def __init__(self, parent):
-        self.parent = parent
-
+    def getSwipe(self):
+        return True
 
 
 class windowSignOut():
@@ -53,7 +56,7 @@ class windowSignOut():
         self.frameSignOutButtons.pack()
         self.frameSignOut.pack()
 
-        while not self.getSwipe():
+        while not self.parent.getSwipe():
             pass
         # self.varName.set(self.nameScanned)
         # self.varID.set(self.IDScanned)
@@ -65,10 +68,34 @@ class windowSignOut():
         self.frameSignOut.destroy()
         self.parent.frameMain.pack()
 
-    def getSwipe(self):
-        # while not self.test:
-        #     pass
-        return True
+
+
+class windowSignIn():
+    def __init__(self, parent):
+        self.parent = parent
+
+        self.frameSignIn = tk.Frame(self.parent.master)
+        tk.Label(self.frameSignIn, text=self.parent.varSignIn.get()).pack()
+        tk.Entry(self.frameSignIn, text=self.parent.varName, justify="center").pack()
+        tk.Entry(self.frameSignIn, text=self.parent.varID, justify="center").pack()
+        self.frameSignInButtons = tk.Frame(self.frameSignIn)
+        tk.Button(self.frameSignInButtons, text="Submit", command=self.commandSubmit).pack(side=tk.LEFT)
+        tk.Button(self.frameSignInButtons, text="Cancel", command=self.commandCancel).pack(side=tk.RIGHT)
+        self.frameSignInButtons.pack()
+        self.frameSignIn.pack()
+
+        while not self.parent.getSwipe():
+            pass
+
+    def commandSubmit(self):
+        self.parent.varFinalID.set(self.parent.varID.get())
+        self.parent.varFinalName.set(self.parent.varName.get())
+
+
+    def commandCancel(self):
+        self.frameSignIn.destroy()
+        self.parent.frameMain.pack()
+
 
 
 
