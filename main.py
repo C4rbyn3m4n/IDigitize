@@ -124,31 +124,44 @@ class windowClassSelect():
         self.frameClassSelect = tk.Frame(self.parent.parent.master)
 
         self.varDefaultClass = tk.StringVar(self.frameClassSelect)
-        self.varDefaultClass.set("Select a Class")
+        self.varDefaultClass.set("Classes")
         self.classes = self.getClasses()
-        self.menuClasses = tk.OptionMenu(self.frameClassSelect, self.varDefaultClass, *self.classes, command=self.commandShowTeachers)
+        self.menuClasses = tk.OptionMenu(self.frameClassSelect, self.varDefaultClass, *self.classes,  command=self.commandShowTeachers)
         self.menuClasses.pack()
 
-
-
-        self.frameClassSelect.pack()
-
-    def commandShowTeachers(self, name):
         self.varDefaultTeacher = tk.StringVar(self.frameClassSelect)
-        self.varDefaultTeacher.set("Select a Teacher")
+        self.varDefaultTeacher.set("Teachers")
         print(self.varDefaultClass.get())
         self.teachers = self.getTeachers(self.varDefaultClass.get())
         print(self.teachers)
         self.menuTeachers = tk.OptionMenu(self.frameClassSelect, self.varDefaultTeacher, *self.teachers)
+        self.menuTeachersMenu = self.menuTeachers.children["menu"]
         self.menuTeachers.pack()
+
+        self.frameClassSelect.pack()
+
+    def commandShowTeachers(self, *name):
+
+        self.menuTeachersMenu.delete(0, "end")
+        self.teachers = self.getTeachers(self.varDefaultClass.get())
+        for teacher in self.teachers:
+            self.menuTeachersMenu.add_command(label=teacher, command=self.commandShowTeachers)
+
 
 
     def getClasses(self):
         return ["Calc", "English", "Science"]
 
     def getTeachers(self, selectedClass):
-        if selectedClass == "Calc":
-            return ["none", "none"]
+        print("Selcted Class: ", selectedClass)
+        if selectedClass == "Classes":
+            return ["-----"]
+        elif selectedClass == "Calc":
+            return ["Calc Teacher 1", "Calc Teacher 2"]
+        elif selectedClass == "English":
+            return ["English Teacher 1", "English Teacher 2"]
+        elif selectedClass == "Science":
+            return ["Science Teacher 1", "Science Teacher 2"]
         else:
             return ["one", "two"]
 
