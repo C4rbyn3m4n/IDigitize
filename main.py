@@ -44,22 +44,29 @@ class mainWindow():
     def readCardData(cardInfo):
         # TODO: Readcard data
         print(cardInfo)
-        root.destroy()
 
     def getSwipe(self):
-        root = tk.Tk()
-        root.title("Input box")
-        mframe = tk.Frame(root)
-        var = tk.StringVar(mframe)
-        mlabel = tk.Label(mframe, text="Scan your card").pack()
-        mEntry = tk.Entry(mframe, visible='no', text=var)
-        mEntry.pack()
-        mEntry.focus()
+        # creates window
+        self.swipe = tk.Tk()
+        # set window title
+        self.swipe.title("Input box")
 
-        buttonOkay = tk.Button(mframe, text="OK", command=self.readCardData(var))
-        root.bind('<Return>', self.readCardData(var))
-        buttonOkay.pack()
-        mframe.pack()
+        # makes a frame on tk window
+        self.mframe = tk.Frame(self.swipe)
+        # makes string variable that can be set
+        self.var = tk.StringVar(self.mframe)
+        self.varLabel1= tk.StringVar(self.mframe)
+        self.varLabel1.set("Scan your card")
+        tk.Label(self.mframe, text=self.varLabel1.get()).pack()
+        self.mEntry = tk.Entry(self.mframe, text=self.var)
+        self.mEntry.pack()
+        self.mEntry.focus()
+
+        self.buttonOkay = tk.Button(self.mframe, text="OK", command=print("hi1"))
+        self.swipe.bind('<Return>', print("hi"))
+        self.buttonOkay.pack()
+        self.mframe.pack()
+        self.swipe.mainloop()
 
         return True
 
