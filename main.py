@@ -146,16 +146,20 @@ class windowClassSelect():
         self.varDefaultClass = tk.StringVar(self.frameClassSelect)
         self.varDefaultClass.set("Classes")
         self.classes = self.getClasses()
-        self.menuClasses = tk.OptionMenu(self.frameClassSelect, self.varDefaultClass, *self.classes,  command=self.commandShowTeachers)
+        self.menuClasses = tk.OptionMenu(self.frameClassSelect, self.varDefaultClass, *self.classes, command=self.commandShowTeachers)
+        self.menuClassesMenu = self.menuClasses.children["menu"]
+        self.menuClasses.config(font=("Times New Roman", 40))
+        # self.menuClasses.children["button"].configure(font=("arial", 40))
+        self.menuClassesMenu.configure(font=("Arial", 40))
         self.menuClasses.pack()
 
         self.varDefaultTeacher = tk.StringVar(self.frameClassSelect)
         self.varDefaultTeacher.set("Teachers")
-        print(self.varDefaultClass.get())
         self.teachers = self.getTeachers(self.varDefaultClass.get())
-        print(self.teachers)
-        self.menuTeachers = tk.OptionMenu(self.frameClassSelect, self.varDefaultTeacher, *self.teachers)
+        self.menuTeachers = tk.OptionMenu(self.frameClassSelect, self.varDefaultTeacher, *self.teachers, command=self.commandSetTeacher)
+        self.menuTeachers.config(font=("Times New Roman", 40))
         self.menuTeachersMenu = self.menuTeachers.children["menu"]
+        self.menuTeachersMenu.config(font=("Times New Roman", 40))
         self.menuTeachers.pack()
 
         self.frameClassSelect.pack()
@@ -167,7 +171,9 @@ class windowClassSelect():
         for teacher in self.teachers:
             self.menuTeachersMenu.add_command(label=teacher, command=self.commandShowTeachers)
 
-
+    def commandSetTeacher(self, *vars):
+        print(self.varDefaultTeacher.get())
+        print(self.varDefaultClass.get())
 
     def getClasses(self):
         return ["Calc", "English", "Science"]
