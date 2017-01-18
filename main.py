@@ -1,10 +1,11 @@
+# imports
 import tkinter as tk
-
 
 class mainWindow():
     def __init__(self, master):
         self.master = master
 
+        # create sign-in and sign-out buttons
         self.frameMain = tk.Frame(self.master)
         self.buttonSignIn = tk.Button(self.frameMain, height=13, width=55, text="Sign In", command=self.commandSignIn)
         self.buttonSignIn.pack()
@@ -13,7 +14,7 @@ class mainWindow():
 
         self.frameMain.pack()
 
-        #Variable Declaration
+        # Variable Declaration
         self.varSignIn = tk.StringVar(self.frameMain)
         self.varID = tk.StringVar(self.frameMain)
         self.varName = tk.StringVar(self.frameMain)
@@ -40,7 +41,26 @@ class mainWindow():
 
         self.signoutWindow = windowSignOut(self)
 
+    def readCardData(cardInfo):
+        # TODO: Readcard data
+        print(cardInfo)
+        root.destroy()
+
     def getSwipe(self):
+        root = tk.Tk()
+        root.title("Input box")
+        mframe = tk.Frame(root)
+        var = tk.StringVar(mframe)
+        mlabel = tk.Label(mframe, text="Scan your card").pack()
+        mEntry = tk.Entry(mframe, visible='no', text=var)
+        mEntry.pack()
+        mEntry.focus()
+
+        buttonOkay = tk.Button(mframe, text="OK", command=self.readCardData(var))
+        root.bind('<Return>', self.readCardData(var))
+        buttonOkay.pack()
+        mframe.pack()
+
         return True
 
 
