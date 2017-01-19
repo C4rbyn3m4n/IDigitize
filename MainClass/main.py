@@ -1,7 +1,7 @@
 # imports
 import tkinter as tk
-import windowMain
 
+from MainClass import windowMain
 
 if __name__ == '__main__':
     running = True
@@ -12,5 +12,4 @@ if __name__ == '__main__':
     window = windowMain.windowMain(root)
     root.title("Volunteer SignIn/SignOut")
 
-    while running:
-        root.update()
+    root.mainloop()

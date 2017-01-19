@@ -1,6 +1,8 @@
 import tkinter as tk
-import windowSignOut, windowSignIn
-from PIL import ImageTk, Image
+
+import windowSignIn
+
+from MainClass import windowSignOut
 
 
 class windowMain():

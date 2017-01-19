@@ -1,5 +1,9 @@
 import tkinter as tk
-import windowClassSelect, windowScan
+
+import windowClassSelect
+
+from MainClass import windowScan
+
 
 class windowSignIn():
     def __init__(self, parent):

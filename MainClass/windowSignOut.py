@@ -1,5 +1,7 @@
 import tkinter as tk
-import windowScan
+
+from MainClass import windowScan
+
 
 class windowSignOut():
     def __init__(self, parent):

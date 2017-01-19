@@ -1,5 +1,7 @@
 import tkinter as tk
-import dataStudent
+
+from MainClass import dataStudent
+
 
 class windowClassSelect():
     def __init__(self, parent):
@@ -67,16 +69,17 @@ class windowClassSelect():
             return ["one", "two"]
 
     def commandSubmit(self):
-        self.student = dataStudent.dataStudent(self.parent.parent.varFinalName.get(),
-                                               self.parent.parent.varFinalID.get(),
-                                               self.varDefaultClass.get(),
-                                               self.varDefaultTeacher.get())
-        print(self.student)
+        if not self.varDefaultTeacher.get() == "Teachers" and not self.varDefaultClass.get() == "Classes":
+            self.student = dataStudent.dataStudent(self.parent.parent.varFinalName.get(),
+                                                   self.parent.parent.varFinalID.get(),
+                                                   self.varDefaultClass.get(),
+                                                   self.varDefaultTeacher.get())
+            print(self.student)
 
-        self.parent.parent.varName.set("Name")
-        self.parent.parent.varID.set("ID")
-        self.frameClassSelect.destroy()
-        self.parent.parent.frameMain.pack()
+            self.parent.parent.varName.set("Name")
+            self.parent.parent.varID.set("ID")
+            self.frameClassSelect.destroy()
+            self.parent.parent.frameMain.pack()
 
     def commandCancel(self):
         self.frameClassSelect.destroy()
