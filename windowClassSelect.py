@@ -1,4 +1,5 @@
 import tkinter as tk
+import dataStudent
 
 class windowClassSelect():
     def __init__(self, parent):
@@ -24,6 +25,11 @@ class windowClassSelect():
         self.menuTeachersMenu.config(font=("Times New Roman", 40))
         self.menuTeachers.pack()
 
+        self.frameButtons = tk.Frame(self.frameClassSelect)
+        tk.Button(self.frameButtons, text="Submit", command=self.commandSubmit).pack(side=tk.LEFT)
+        tk.Button(self.frameButtons, text="Cancel", command=self.commandCancel).pack(side=tk.RIGHT)
+        self.frameButtons.pack(side=tk.BOTTOM)
+
         self.frameClassSelect.pack()
 
     def commandShowTeachers(self, *name):
@@ -46,7 +52,7 @@ class windowClassSelect():
     def getTeachers(self, selectedClass):
         print("Selcted Class: ", selectedClass)
         if selectedClass == "Classes":
-            return ["-----"]
+            return ["Teachers"]
         elif selectedClass == "Calc":
             return ["Calc Teacher 1", "Calc Teacher 2"]
         elif selectedClass == "English":
@@ -55,4 +61,12 @@ class windowClassSelect():
             return ["Science Teacher 1", "Science Teacher 2"]
         else:
             return ["one", "two"]
+
+    def commandSubmit(self):
+        self.student = dataStudent.dataStudent(self.parent.parent.varFinalName.get(), self.parent.parent.varFinalID.get(), self.varDefaultClass.get(), self.varDefaultTeacher.get())
+        str(self.student)
+
+    def commandCancel(self):
+        self.frameClassSelect.destroy()
+        self.parent.frameSignIn.pack()
 
