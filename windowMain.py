@@ -1,7 +1,7 @@
 import tkinter as tk
 import windowSignOut, windowSignIn
 
-class mainWindow():
+class windowMain():
     def __init__(self, master):
         # make parent accessible for all methods
         self.master = master
