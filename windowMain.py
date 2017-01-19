@@ -11,6 +11,7 @@ class windowMain():
 
         self.geom = '200x200+0+0'
         self.master.geometry("{0}x{1}+0+0".format(master.winfo_screenwidth(), master.winfo_screenheight()))
+        self.master.bind('<Escape>', lambda event: self.master.geometry('{}x{}'.format(500, 500)))
 
         # sign-in and sign-out buttons and pack
         self.buttonSignIn = tk.Button(self.frameMain, height=13, width=55, text="Sign In", command=self.commandSignIn)
