@@ -1,5 +1,5 @@
 import tkinter as tk
-import windowClassSelect
+import windowClassSelect, windowScan
 
 class windowSignIn():
     def __init__(self, parent):
@@ -15,8 +15,7 @@ class windowSignIn():
         self.frameSignInButtons.pack()
         self.frameSignIn.pack()
 
-        while not self.parent.getSwipe():
-            pass
+        self.ScanWindow = windowScan.windowScan(self)
 
     def commandSubmit(self):
         self.parent.varFinalID.set(self.parent.varID.get())
@@ -35,3 +34,9 @@ class windowSignIn():
         self.parent.varFinalName.set("")
         self.frameSignIn.destroy()
         self.parent.frameMain.pack()
+
+    def readCard(self, cardInfo):
+        # self.swipe.destroy()
+        # TODO: Readcard data
+        print(cardInfo)
+

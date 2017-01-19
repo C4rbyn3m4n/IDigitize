@@ -1,4 +1,5 @@
 import tkinter as tk
+import windowScan
 
 class windowSignOut():
     def __init__(self, parent):
@@ -14,10 +15,7 @@ class windowSignOut():
         self.frameSignOutButtons.pack()
         self.frameSignOut.pack()
 
-        while not self.parent.getSwipe():
-            pass
-        # self.varName.set(self.nameScanned)
-        # self.varID.set(self.IDScanned)
+        self.ScanWindow = windowScan.windowScan(self)
 
     def commandSubmit(self):
         self.parent.varFinalID.set(self.parent.varID.get())
@@ -35,4 +33,10 @@ class windowSignOut():
 
         self.frameSignOut.destroy()
         self.parent.frameMain.pack()
+
+    def readCard(self, cardInfo):
+        # self.swipe.destroy()
+        # TODO: Readcard data
+        print(cardInfo)
+
 
