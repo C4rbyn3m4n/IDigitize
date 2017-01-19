@@ -42,9 +42,10 @@ class mainWindow():
         self.signoutWindow = windowSignOut(self)
 
     def readCardData(self, cardInfo):
-        #self.swipe.destroy()
+        # self.swipe.destroy()
         # TODO: Readcard data
-        print(cardInfo)
+        self.varName.set(cardInfo)
+        self.varID.set(cardInfo)
         self.CardLabel.config(text="Error")
 
     def getSwipe(self):
