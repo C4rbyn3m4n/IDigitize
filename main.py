@@ -1,17 +1,25 @@
 # imports
 import tkinter as tk
 
+
 class mainWindow():
     def __init__(self, master):
+        # make parent accessible for all methods
         self.master = master
 
-        # create sign-in and sign-out buttons
+        # create frame
         self.frameMain = tk.Frame(self.master)
+
+        self.geom = '200x200+0+0'
+        self.master.geometry("{0}x{1}+0+0".format(master.winfo_screenwidth(), master.winfo_screenheight()))
+        self.master.bind('<Escape>', lambda event: self.master.geometry(root.geometry('{}x{}'.format(1, 1))))
+
+        # sign-in and sign-out buttons and pack
         self.buttonSignIn = tk.Button(self.frameMain, height=13, width=55, text="Sign In", command=self.commandSignIn)
         self.buttonSignIn.pack()
         self.buttonSignOut = tk.Button(self.frameMain, height=13, width=55, text="Sign Out", command=self.commandSignOut)
         self.buttonSignOut.pack()
-
+        # pack frame
         self.frameMain.pack()
 
         # Variable Declaration
@@ -24,8 +32,7 @@ class mainWindow():
 
         self.varName.set("Name")
         self.varID.set("ID")
-        self.varSignIn.set("Please swipe your student ID card")
-
+        self.varSignIn.set("Please Check to see if your name is correct.")
 
     def commandSignIn(self):
         # hides the main class buttons
@@ -61,18 +68,18 @@ class mainWindow():
         self.mframe = tk.Frame(self.swipe)
         # makes string variable that can be set
         self.var = tk.StringVar(self.mframe)
-        self.CardLabel=tk.Label(self.mframe, text="Scan your card")
+        self.CardLabel = tk.Label(self.mframe, text="Scan your card")
         self.CardLabel.pack()
         self.mEntry = tk.Entry(self.mframe, text=self.var)
         self.mEntry.pack()
         self.mEntry.focus()
 
-        self.frameButtons= tk.Frame(self.mframe)
+        self.frameButtons = tk.Frame(self.mframe)
         self.buttonOkay = tk.Button(self.frameButtons, text="OK", command=lambda: self.readCardData(self.var.get()))
         self.buttonOkay.pack(side=tk.LEFT)
         self.swipe.bind('<Return>', lambda event: self.readCardData(self.var.get()))
 
-        tk.Button(self.frameButtons, text="Camcel", command=lambda: self.swipe.destroy()).pack(side=tk.RIGHT)
+        tk.Button(self.frameButtons, text="Cancel", command=lambda: self.swipe.destroy()).pack(side=tk.RIGHT)
 
         self.frameButtons.pack()
         self.mframe.pack()
@@ -97,8 +104,8 @@ class windowSignOut():
 
         while not self.parent.getSwipe():
             pass
-        # self.varName.set(self.nameScanned)
-        # self.varID.set(self.IDScanned)
+            # self.varName.set(self.nameScanned)
+            # self.varID.set(self.IDScanned)
 
     def commandSubmit(self):
         self.parent.varFinalID.set(self.parent.varID.get())
@@ -116,7 +123,6 @@ class windowSignOut():
 
         self.frameSignOut.destroy()
         self.parent.frameMain.pack()
-
 
 
 class windowSignIn():
@@ -146,13 +152,13 @@ class windowSignIn():
         self.frameSignIn.pack_forget()
         self.selectTeacherWindow = windowClassSelect(self)
 
-
     def commandCancel(self):
         # Clear final variables
         self.parent.varFinalID.set("")
         self.parent.varFinalName.set("")
         self.frameSignIn.destroy()
         self.parent.frameMain.pack()
+
 
 class windowClassSelect():
     def __init__(self, parent):
@@ -163,7 +169,8 @@ class windowClassSelect():
         self.varDefaultClass = tk.StringVar(self.frameClassSelect)
         self.varDefaultClass.set("Classes")
         self.classes = self.getClasses()
-        self.menuClasses = tk.OptionMenu(self.frameClassSelect, self.varDefaultClass, *self.classes, command=self.commandShowTeachers)
+        self.menuClasses = tk.OptionMenu(self.frameClassSelect, self.varDefaultClass, *self.classes,
+                                         command=self.commandShowTeachers)
         self.menuClassesMenu = self.menuClasses.children["menu"]
         self.menuClasses.config(font=("Times New Roman", 40))
         # self.menuClasses.children["button"].configure(font=("arial", 40))
@@ -173,7 +180,8 @@ class windowClassSelect():
         self.varDefaultTeacher = tk.StringVar(self.frameClassSelect)
         self.varDefaultTeacher.set("Teachers")
         self.teachers = self.getTeachers(self.varDefaultClass.get())
-        self.menuTeachers = tk.OptionMenu(self.frameClassSelect, self.varDefaultTeacher, *self.teachers, command=self.commandSetTeacher)
+        self.menuTeachers = tk.OptionMenu(self.frameClassSelect, self.varDefaultTeacher, *self.teachers,
+                                          command=self.commandSetTeacher)
         self.menuTeachers.config(font=("Times New Roman", 40))
         self.menuTeachersMenu = self.menuTeachers.children["menu"]
         self.menuTeachersMenu.config(font=("Times New Roman", 40))
@@ -207,9 +215,6 @@ class windowClassSelect():
             return ["Science Teacher 1", "Science Teacher 2"]
         else:
             return ["one", "two"]
-
-
-
 
 
 if __name__ == '__main__':
