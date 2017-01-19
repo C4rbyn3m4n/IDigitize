@@ -1,5 +1,7 @@
 import tkinter as tk
 import windowSignOut, windowSignIn
+from PIL import ImageTk, Image
+
 
 class windowMain():
     def __init__(self, master):
@@ -11,6 +13,11 @@ class windowMain():
 
         self.master.geometry("{0}x{1}+0+0".format(master.winfo_screenwidth(), master.winfo_screenheight()))
         self.master.bind('<Escape>', lambda event: self.master.geometry('{}x{}'.format(500, 500)))
+
+        # self.imageBackground = ImageTk.PhotoImage(Image("FloridaPolyGray.jpg"))
+        # self.labelBackgroundImage = tk.Label(self.frameMain, image=self.imageBackground)
+        # self.labelBackgroundImage.place(x=0, y=0, relwidth=1, relheight=1)
+        # self.labelBackgroundImage.pack()
 
         # sign-in and sign-out buttons and pack
         self.buttonSignIn = tk.Button(self.frameMain, height=13, width=55, text="Sign In", command=self.commandSignIn)

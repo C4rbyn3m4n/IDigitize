@@ -12,6 +12,7 @@ class windowSignIn():
         self.frameSignInButtons = tk.Frame(self.frameSignIn)
         tk.Button(self.frameSignInButtons, text="Submit", command=self.commandSubmit).pack(side=tk.LEFT)
         tk.Button(self.frameSignInButtons, text="Cancel", command=self.commandCancel).pack(side=tk.RIGHT)
+        self.parent.master.bind('<Return>', lambda event: self.commandSubmit())
         self.frameSignInButtons.pack()
         self.frameSignIn.pack()
 
@@ -20,6 +21,7 @@ class windowSignIn():
     def commandSubmit(self):
         self.parent.varFinalID.set(self.parent.varID.get())
         self.parent.varFinalName.set(self.parent.varName.get())
+        self.parent.master.unbind('<Return>')
 
         print(self.parent.varFinalID.get())
         print(self.parent.varFinalName.get())
@@ -39,4 +41,7 @@ class windowSignIn():
         # self.swipe.destroy()
         # TODO: Readcard data
         print(cardInfo)
+        self.parent.varID.set((cardInfo.upper()))
+        self.parent.varName.set((cardInfo.lower()))
+
 

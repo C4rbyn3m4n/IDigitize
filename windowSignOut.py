@@ -12,6 +12,7 @@ class windowSignOut():
         self.frameSignOutButtons = tk.Frame(self.frameSignOut)
         tk.Button(self.frameSignOutButtons, text="Submit", command=self.commandSubmit).pack(side=tk.LEFT)
         tk.Button(self.frameSignOutButtons, text="Cancel", command=self.commandCancel).pack(side=tk.RIGHT)
+        self.parent.master.bind('<Return>', lambda event: self.commandSubmit())
         self.frameSignOutButtons.pack()
         self.frameSignOut.pack()
 
@@ -25,6 +26,9 @@ class windowSignOut():
         #
         #
         #
+
+        self.frameSignOut.destroy()
+        self.parent.frameMain.pack()
 
     def commandCancel(self):
         # clear final variables

@@ -10,7 +10,8 @@ class windowClassSelect():
         self.varDefaultClass = tk.StringVar(self.frameClassSelect)
         self.varDefaultClass.set("Classes")
         self.classes = self.getClasses()
-        self.menuClasses = tk.OptionMenu(self.frameClassSelect, self.varDefaultClass, *self.classes, command=self.commandShowTeachers)
+        self.menuClasses = tk.OptionMenu(self.frameClassSelect, self.varDefaultClass, *self.classes,
+                                         command=self.commandShowTeachers)
         self.menuClassesMenu = self.menuClasses.children["menu"]
         self.menuClasses.config(font=("Times New Roman", 40))
         self.menuClassesMenu.configure(font=("Arial", 40))
@@ -19,7 +20,8 @@ class windowClassSelect():
         self.varDefaultTeacher = tk.StringVar(self.frameClassSelect)
         self.varDefaultTeacher.set("Teachers")
         self.teachers = self.getTeachers(self.varDefaultClass.get())
-        self.menuTeachers = tk.OptionMenu(self.frameClassSelect, self.varDefaultTeacher, *self.teachers, command=self.commandSetTeacher)
+        self.menuTeachers = tk.OptionMenu(self.frameClassSelect, self.varDefaultTeacher, *self.teachers,
+                                          command=self.commandSetTeacher)
         self.menuTeachersMenu = self.menuTeachers.children["menu"]
         self.menuTeachers.config(font=("Times New Roman", 40))
         self.menuTeachersMenu.config(font=("Times New Roman", 40))
@@ -29,6 +31,7 @@ class windowClassSelect():
         tk.Button(self.frameButtons, text="Submit", command=self.commandSubmit).pack(side=tk.LEFT)
         tk.Button(self.frameButtons, text="Cancel", command=self.commandCancel).pack(side=tk.RIGHT)
         self.frameButtons.pack(side=tk.BOTTOM)
+        self.parent.parent.master.bind('<Return>', lambda event: self.commandSubmit())
 
         self.frameClassSelect.pack()
 
@@ -38,7 +41,8 @@ class windowClassSelect():
 
         self.teachers = self.getTeachers(self.varDefaultClass.get())
         for teacher in self.teachers:
-            self.menuTeachersMenu.add_command(label=teacher, command=lambda teach=teacher: self.varDefaultTeacher.set(teach))
+            self.menuTeachersMenu.add_command(label=teacher, command=lambda teach=teacher:
+                                                                        self.varDefaultTeacher.set(teach))
 
 
     def commandSetTeacher(self, *vars):
@@ -63,8 +67,16 @@ class windowClassSelect():
             return ["one", "two"]
 
     def commandSubmit(self):
-        self.student = dataStudent.dataStudent(self.parent.parent.varFinalName.get(), self.parent.parent.varFinalID.get(), self.varDefaultClass.get(), self.varDefaultTeacher.get())
-        str(self.student)
+        self.student = dataStudent.dataStudent(self.parent.parent.varFinalName.get(),
+                                               self.parent.parent.varFinalID.get(),
+                                               self.varDefaultClass.get(),
+                                               self.varDefaultTeacher.get())
+        print(self.student)
+
+        self.parent.parent.varName.set("Name")
+        self.parent.parent.varID.set("ID")
+        self.frameClassSelect.destroy()
+        self.parent.parent.frameMain.pack()
 
     def commandCancel(self):
         self.frameClassSelect.destroy()
