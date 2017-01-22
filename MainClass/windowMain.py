@@ -1,5 +1,4 @@
 import tkinter as tk
-
 import windowSignIn
 
 from MainClass import windowSignOut
@@ -16,7 +15,7 @@ class windowMain():
         self.master.geometry("{0}x{1}+0+0".format(master.winfo_screenwidth(), master.winfo_screenheight()))
         self.master.bind('<Escape>', lambda event: self.master.geometry('{}x{}'.format(500, 500)))
 
-        # self.imageBackground = ImageTk.PhotoImage(Image("FloridaPolyGray.jpg"))
+        # self.imageBackground = tk.PhotoImage("FloridaPolyGray.png")
         # self.labelBackgroundImage = tk.Label(self.frameMain, image=self.imageBackground)
         # self.labelBackgroundImage.place(x=0, y=0, relwidth=1, relheight=1)
         # self.labelBackgroundImage.pack()
