@@ -1,6 +1,7 @@
 import tkinter as tk
 
-from MainClass import dataStudent
+import dataStudent
+import MainClass.client as client
 
 
 class windowClassSelect():
@@ -75,6 +76,11 @@ class windowClassSelect():
                                                    self.varDefaultClass.get(),
                                                    self.varDefaultTeacher.get())
             print(self.student)
+
+            try:
+                client.client().sendStudent(self.student)
+            except Exception as e:
+                print(e)
 
             self.parent.parent.varName.set("Name")
             self.parent.parent.varID.set("ID")

@@ -1,10 +1,22 @@
 
 
 class dataStudent():
-    def __init__(self, name, ID, Class, Teacher):
-        self.Name = name
+    def __init__(self, Name="", ID="", Class="", Teacher=""):
+        self.setClass(Class)
+        self.setTeacher(Teacher)
+        self.setID(ID)
+        self.setName(Name)
+
+    def setName(self, Name):
+        self.Name = Name
+
+    def setID(self, ID):
         self.ID = ID
+
+    def setClass(self, Class):
         self.Class = Class
+
+    def setTeacher(self, Teacher):
         self.Teacher = Teacher
 
     def getName(self):
