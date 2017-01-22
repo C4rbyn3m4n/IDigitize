@@ -3,14 +3,17 @@ import tkinter as tk
 class windowScan():
     def __init__(self, parent):
         self.parent = parent
+
         # creates window
         self.swipe = tk.Tk()
+        self.swipe.resizable(0, 0)
+
         # set window title
         self.swipe.title("Input box")
         self.swipe.lift()
         self.swipe.attributes("-topmost", True)
         self.swipe.after(1, lambda: self.swipe.focus_force())
-        self.swipe.resizable(0, 0)
+
 
         # makes a frame on tk window
         self.mframe = tk.Frame(self.swipe)
