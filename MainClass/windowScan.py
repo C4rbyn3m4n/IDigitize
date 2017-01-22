@@ -10,10 +10,10 @@ class windowScan():
         self.swipe.lift()
         self.swipe.attributes("-topmost", True)
         self.swipe.after(1, lambda: self.swipe.focus_force())
+        self.swipe.resizable(0, 0)
 
         # makes a frame on tk window
         self.mframe = tk.Frame(self.swipe)
-
 
         # makes string variable that can be set
         self.var = tk.StringVar(self.mframe)
@@ -26,13 +26,17 @@ class windowScan():
         self.swipe.bind('<Return>', lambda event: self.okay())
         self.frameButtons.pack()
 
-        tk.Button(self.frameButtons, text="Cancel",height=3, width=10, command=lambda: self.swipe.destroy()).pack(side=tk.RIGHT)
+        tk.Button(self.frameButtons, text="Cancel", height=3, width=10, command=lambda: self.swipe.destroy()).pack(side=tk.RIGHT)
 
-        self.mEntry = tk.Entry(self.mframe, text=self.var)
-        self.mEntry.pack()
+        tk.Label(self.mframe, text="").pack()
+
+        self.mEntry = tk.Entry(self.mframe, text=self.var, width=1, font=("Times New Roman", 1))
+        self.mEntry.pack(side=tk.LEFT)
         self.mEntry.focus()
 
         self.mframe.pack()
+
+        self.swipe.geometry("{0}x{1}+0+0".format(163, 99))
         self.swipe.mainloop()
 
     def okay(self):
