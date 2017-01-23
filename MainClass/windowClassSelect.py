@@ -78,7 +78,7 @@ class windowClassSelect():
             print(self.student)
 
             try:
-                client.client().sendStudent(self.student)
+                client.client("192.168.41.74").sendStudent(self.student)
             except Exception as e:
                 print(e)
 
