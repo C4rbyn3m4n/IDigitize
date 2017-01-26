@@ -78,9 +78,13 @@ class windowClassSelect():
             print(self.student)
 
             try:
-                client.client("192.168.41.74").sendStudent(self.student)
+                client.client().sendStudent(self.student)
+                print("Student Sent!!")
             except Exception as e:
                 print(e)
+                print("Student failed to send!!")
+
+
 
             self.parent.parent.varName.set("Name")
             self.parent.parent.varID.set("ID")
@@ -88,6 +92,10 @@ class windowClassSelect():
             self.parent.parent.frameMain.pack()
 
     def commandCancel(self):
+        self.parent.parent.master.bind('<Return>', self.commandDoNothing)
         self.frameClassSelect.destroy()
         self.parent.frameSignIn.pack()
+
+    def commandDoNothing(self, *args):
+        pass
 

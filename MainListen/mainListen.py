@@ -6,4 +6,6 @@ if __name__ == "__main__":
     root.geometry("600x600")
     mainWindow = windowListenMain(root)
 
-    root.mainloop()
+    while 1:
+        root.update_idletasks()
+        root.update()
