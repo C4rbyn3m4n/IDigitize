@@ -1,4 +1,5 @@
 import socket
+import pickle
 
 class client():
     def __init__(self, server="127.0.0.1", size=1024):
@@ -39,6 +40,14 @@ class client():
             raise Exception("Server was not alive")
         return s
 
+    def getClassteacherArray(self):
+        try:
+            s = self.connectToServer()
+        except Exception as e:
+            print(e)
+        s.send(bytes("GET INFO", "UTF-8"))
+        data = s.recv(4096)
+        return pickle.loads(data)
 
 
 

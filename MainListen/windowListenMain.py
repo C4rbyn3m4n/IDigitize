@@ -7,6 +7,7 @@ class windowListenMain():
     def __init__(self, parent):
         self.parent = parent
         self.students = []
+        self.arrayClassTeachers = [["Calc", "Calc1", "Calc2"], ["English", "English1", "English2"]]
         self.tutors = [Tutor("Tutor 1"), Tutor("Tutor 2"), Tutor("Tutor 3"), Tutor("Tutor 4")]
         self.queueServer = queue.Queue()
         self.queueStatus = queue.Queue()
@@ -55,7 +56,7 @@ class windowListenMain():
 
         self.addTutors()
         self.varStatus.set("Status: Starting Server...")
-        serverThread.serverThread(self.queueServer, self.queueStatus).start()
+        serverThread.serverThread(self.queueServer, self.queueStatus, self).start()
         self.varStatus.set("Status: Server Started")
         self.frameMain.after(1, self.checkQueue)
         self.frameMain.after(2, self.checkStatusQueue)
@@ -78,7 +79,7 @@ class windowListenMain():
             self.varStatus.set(msg)
         except queue.Empty:
             pass
-        self.frameMain.after(100, self.checkStatusQueue())
+        self.frameMain.after(100, self.checkStatusQueue)
 
     def addTutors(self):
         for tutor in self.tutors:
@@ -137,5 +138,7 @@ class windowListenMain():
         for intStudentIndex in arrayStudentIndex:
             print("Index to check for student:", intStudentIndex)
             print("Stored at index %d is: \n" % intStudentIndex, self.students[intStudentIndex].toString())
+
+        print(self.listTutors.get(self.listTutors.curselection()))
 
         # print("Selected student:\n", self.getSelectedStudent().toString())

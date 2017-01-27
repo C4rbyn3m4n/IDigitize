@@ -3,13 +3,15 @@ import threading
 import queue
 import dataStudent
 import time
+import pickle
 
 class serverThread(threading.Thread):
-    def __init__(self, queue, statusQueue):
+    def __init__(self, queue, statusQueue, parent):
         threading.Thread.__init__(self)
         self.queue = queue
         self.statusQueue = statusQueue
         self.daemon = True
+        self.parent = parent
 
     def run(self):
         serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -32,6 +34,9 @@ class serverThread(threading.Thread):
                 if data:
                     if data == "ALIVE?":
                         client.send(bytes("ALIVE", "UTF-8"))
+                    elif data == "GET INFO":
+                        dataSend = pickle.dumps(self.parent.arrayClassTeachers)
+                        client.send(dataSend)
                     elif data == "SEND":
                         student = dataStudent.dataStudent()
                         client.send(bytes("200", "UTF-8"))
@@ -70,6 +75,7 @@ class serverThread(threading.Thread):
                         else:
                             raise Exception("No Name Received")
                     else:
+                        client.send(bytes("INVALID DATA", "UTF-8"))
                         raise Exception("Client sent invalid data")
                 else:
                     raise Exception("Client Disconnected")

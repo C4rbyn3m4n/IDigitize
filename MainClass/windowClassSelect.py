@@ -54,18 +54,19 @@ class windowClassSelect():
         print(self.varDefaultClass.get())
 
     def getClasses(self):
-        return ["Calc", "English", "Science"]
+        classes = []
+        for Class in range(len(self.parent.parent.arrayClassTeachers)):
+            classes.append(self.parent.parent.arrayClassTeachers[Class][0])
+        return classes
 
     def getTeachers(self, selectedClass):
         print("Selcted Class: ", selectedClass)
-        if selectedClass == "Classes":
-            return ["Teachers"]
-        elif selectedClass == "Calc":
-            return ["Calc Teacher 1", "Calc Teacher 2"]
-        elif selectedClass == "English":
-            return ["English Teacher 1", "English Teacher 2"]
-        elif selectedClass == "Science":
-            return ["Science Teacher 1", "Science Teacher 2"]
+        for i in self.parent.parent.arrayClassTeachers:
+            if i[0] == selectedClass:
+                teachers = []
+                for j in range(1, len(i)):
+                    teachers.append(i[j])
+                return teachers
         else:
             return ["one", "two"]
 

@@ -1,5 +1,6 @@
 import tkinter as tk
 import windowSignIn
+from client import client
 
 from MainClass import windowSignOut
 
@@ -8,6 +9,7 @@ class windowMain():
     def __init__(self, master):
         # make parent accessible for all methods
         self.master = master
+        self.arrayClassTeachers = client().getClassteacherArray()
 
         # create sign-in and sign-out buttons
         self.frameMain = tk.Frame(self.master)
