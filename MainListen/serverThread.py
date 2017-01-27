@@ -37,6 +37,11 @@ class serverThread(threading.Thread):
                     elif data == "GET INFO":
                         dataSend = pickle.dumps(self.parent.arrayClassTeachers)
                         client.send(dataSend)
+                    elif data == "SIGNOUT":
+                        client.send(bytes("404", "UTF-8"))
+                        data = client.recv(size).decode("UTF-8")
+                        if data:
+                            stringStudentToSignOut = data
                     elif data == "SEND":
                         student = dataStudent.dataStudent()
                         client.send(bytes("200", "UTF-8"))
@@ -63,6 +68,7 @@ class serverThread(threading.Thread):
                                         client.close()
                                         student.setSignIn(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                                         print(student)
+                                        self.queue.put("STUDENT")
                                         self.queue.put(student)
                                         print(self.queue.qsize())
                                         break

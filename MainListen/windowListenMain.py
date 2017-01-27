@@ -70,7 +70,12 @@ class windowListenMain():
             # print("Size before pull:", self.queueServer.qsize())
             msg = self.queueServer.get_nowait()
             # print("Size after pull:", self.queueServer.qsize())
-            self.addStudent(msg)
+            if msg == "STUDENT":
+                msg = self.queueServer.get()
+                self.addStudent(msg)
+            elif msg == "SIGNOUT":
+                msg = self.queueServer.get()
+                self.signOutStudent(msg)
         except queue.Empty:
             pass
         self.frameMain.after(100, self.checkQueue)
