@@ -166,4 +166,5 @@ class windowListenMain():
 
         for line in lines:
             if line != "":
-            self.tutors.append(Tutor(line))
+                self.tutors.append(Tutor(line))
+                self.listTutors.insert(tk.END, line)
