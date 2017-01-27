@@ -1,13 +1,14 @@
 import tkinter as tk
 import serverThread
 import queue
+import requests
 from dataTutor import *
 
 class windowListenMain():
     def __init__(self, parent):
         self.parent = parent
         self.students = []
-        self.arrayClassTeachers = [["Calc", "Calc1", "Calc2"], ["English", "English1", "English2"]]
+        self.arrayClassTeachers = []
         self.tutors = [Tutor("Tutor 1"), Tutor("Tutor 2"), Tutor("Tutor 3"), Tutor("Tutor 4")]
         self.queueServer = queue.Queue()
         self.queueStatus = queue.Queue()
@@ -62,6 +63,7 @@ class windowListenMain():
         self.frameMain.after(2, self.checkStatusQueue)
         self.parent.bind('<Return>', self.testSelection)
 
+        self.updateClassesAndTeacher()
 
     def checkQueue(self):
         try:
@@ -142,3 +144,20 @@ class windowListenMain():
         print(self.listTutors.get(self.listTutors.curselection()))
 
         # print("Selected student:\n", self.getSelectedStudent().toString())
+
+    def updateClassesAndTeacher(self):
+        teachersHTML = "https://raw.githubusercontent.com/C4rbyn3m4n/IDigitize/master/TeacherTutorInfo/Teachers.txt";
+        tutorsHTML = "https://raw.githubusercontent.com/C4rbyn3m4n/IDigitize/master/TeacherTutorInfo/Tutors.txt";
+
+        info = []
+
+        teacherData = requests.get(teachersHTML).text
+        lines = teacherData.split('\n')
+
+        for line in lines:
+            if "" == line:
+                self.arrayClassTeachers.append(info)
+                info = []
+            else:
+                info.append(line)
+
