@@ -5,9 +5,10 @@ import dataStudent
 import time
 
 class serverThread(threading.Thread):
-    def __init__(self, queue):
+    def __init__(self, queue, statusQueue):
         threading.Thread.__init__(self)
         self.queue = queue
+        self.statusQueue = statusQueue
         self.daemon = True
 
     def run(self):

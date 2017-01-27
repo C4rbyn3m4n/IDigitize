@@ -1,19 +1,21 @@
 import tkinter as tk
 import serverThread
 import queue
+from dataTutor import *
 
 class windowListenMain():
     def __init__(self, parent):
         self.parent = parent
         self.students = []
-        self.tutors = ["Tutor 1", "Tutor 2", "Tutor 3", "Tutor 4"]
+        self.tutors = [Tutor("Tutor 1"), Tutor("Tutor 2"), Tutor("Tutor 3"), Tutor("Tutor 4")]
         self.queueServer = queue.Queue()
+        self.queueStatus = queue.Queue()
 
 
         self.frameMain = tk.Frame(parent)
         self.varStatus = tk.StringVar(self.frameMain)
-        self.varStatus.set(".....")
-        tk.Label(self.frameMain, textvariable=self.varStatus).pack()
+        self.varStatus.set("Status: .....")
+        tk.Label(self.frameMain, textvariable=self.varStatus, font=("Times New Roman", 10, "bold")).pack()
         self.frameInfo = tk.Frame(self.frameMain)
 
         self.frameScrollBox = tk.Frame(self.frameInfo)
@@ -33,19 +35,30 @@ class windowListenMain():
         self.scrollTutors.config(command=self.listTutors.yview)
 
         self.frameButtons = tk.Frame(self.frameInfo)
-        tk.Button(self.frameButtons, text="Assign Tutor").pack()
+        tk.Button(self.frameButtons, text="Assign Tutor", width=19).pack(fill="x")
 
         self.frameScrollBox.grid(column=0, row=0)
         self.frameTutorBox.grid(column=1, row=0)
-        self.frameButtons.grid(column=2, row=0)
+        self.frameButtons.grid(column=2, row=0, sticky=tk.EW)
         self.frameInfo.pack()
+
+        self.frameAssignedTutors = tk.Frame(self.frameMain)
+        tk.Label(self.frameAssignedTutors, text="Assigned Tutors").pack()
+        self.scrollAssignedTutors = tk.Scrollbar(self.frameAssignedTutors)
+        self.scrollAssignedTutors.pack(side=tk.RIGHT, fill=tk.Y)
+        self.listAssignedTutors = tk.Listbox(self.frameAssignedTutors, yscrollcommand=self.scrollAssignedTutors.set)
+        self.listAssignedTutors.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.scrollAssignedTutors.config(command=self.listAssignedTutors.yview)
+
+        self.frameAssignedTutors.pack()
         self.frameMain.pack()
 
         self.addTutors()
-        self.varStatus.set("Starting Server...")
-        serverThread.serverThread(self.queueServer).start()
-        self.varStatus.set("Server Started")
+        self.varStatus.set("Status: Starting Server...")
+        serverThread.serverThread(self.queueServer, self.queueStatus).start()
+        self.varStatus.set("Status: Server Started")
         self.frameMain.after(1, self.checkQueue)
+        self.frameMain.after(2, self.checkStatusQueue)
         self.parent.bind('<Return>', self.testSelection)
 
 
@@ -54,12 +67,18 @@ class windowListenMain():
             # print("Size before pull:", self.queueServer.qsize())
             msg = self.queueServer.get_nowait()
             # print("Size after pull:", self.queueServer.qsize())
-            print(msg)
             self.addStudent(msg)
-            self.queueServer.qsize()
         except queue.Empty:
             pass
         self.frameMain.after(100, self.checkQueue)
+
+    def checkStatusQueue(self):
+        try:
+            msg = self.queueStatus.get_nowait()
+            self.varStatus.set(msg)
+        except queue.Empty:
+            pass
+        self.frameMain.after(100, self.checkStatusQueue())
 
     def addTutors(self):
         for tutor in self.tutors:
@@ -77,8 +96,31 @@ class windowListenMain():
                 return i
         return -500
 
-    def getSelectedStudent(self):
-        return self.students[self.getStudentIndex(self.listStudents.get(self.listStudents.curselection()))]
+    def getTutorIndex(self, tutorString):
+        for i, tutor in enumerate(self.tutors):
+            if str(tutor) == tutorString:
+                return i
+        return -500
+
+    def getSelectedStudents(self):
+        students = []
+        arrayStudentStrings = []
+        for i in self.listStudents.curselection():
+            arrayStudentStrings.append(self.listStudents.get(i))
+        arrayStudentIndex = []
+        for stringStudent in arrayStudentStrings:
+            arrayStudentIndex.append(self.getStudentIndex(stringStudent))
+        for intStudentIndex in arrayStudentIndex:
+            students.append(self.students[intStudentIndex])
+        return students
+
+    def getSelectedTutor(self):
+        return self.tutors[self.getTutorIndex(self.listTutors.get(self.listTutors.curselection()))]
+
+    def commandAssignTutor(self):
+        self.getSelectedTutor().addStudentArray(self.getSelectedStudents())
+        for i in self.listStudents.curselection():
+            self.listStudents.delete(i)
 
     def testSelection(self, *args):
         print(self.listStudents.curselection())
