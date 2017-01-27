@@ -9,7 +9,7 @@ class windowListenMain():
         self.parent = parent
         self.students = []
         self.arrayClassTeachers = []
-        self.tutors = [Tutor("Tutor 1"), Tutor("Tutor 2"), Tutor("Tutor 3"), Tutor("Tutor 4")]
+        self.tutors = []
         self.queueServer = queue.Queue()
         self.queueStatus = queue.Queue()
 
@@ -63,7 +63,7 @@ class windowListenMain():
         self.frameMain.after(2, self.checkStatusQueue)
         self.parent.bind('<Return>', self.testSelection)
 
-        self.updateClassesAndTeacher()
+        self.updateClassesAndTutors()
 
     def checkQueue(self):
         try:
@@ -145,7 +145,7 @@ class windowListenMain():
 
         # print("Selected student:\n", self.getSelectedStudent().toString())
 
-    def updateClassesAndTeacher(self):
+    def updateClassesAndTutors(self):
         teachersHTML = "https://raw.githubusercontent.com/C4rbyn3m4n/IDigitize/master/TeacherTutorInfo/Teachers.txt";
         tutorsHTML = "https://raw.githubusercontent.com/C4rbyn3m4n/IDigitize/master/TeacherTutorInfo/Tutors.txt";
 
@@ -161,3 +161,9 @@ class windowListenMain():
             else:
                 info.append(line)
 
+        TutorData= requests.get(tutorsHTML).text
+        lines = TutorData.split('\n')
+
+        for line in lines:
+            if line != "":
+            self.tutors.append(Tutor(line))
