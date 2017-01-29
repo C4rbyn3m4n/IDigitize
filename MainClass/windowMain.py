@@ -9,7 +9,8 @@ class windowMain():
     def __init__(self, master):
         # make parent accessible for all methods
         self.master = master
-        self.arrayClassTeachers = client().getClassteacherArray()
+        self.loadClassTeachers()
+
 
         # create sign-in and sign-out buttons
         self.frameMain = tk.Frame(self.master)
@@ -57,4 +58,9 @@ class windowMain():
 
         self.signoutWindow = windowSignOut.windowSignOut(self)
 
+    def loadClassTeachers(self):
+        try:
+            self.arrayClassTeachers = client().getClassteacherArray()
+        except UnboundLocalError as e:
+            self.master.after(1000, self.loadClassTeachers)
 

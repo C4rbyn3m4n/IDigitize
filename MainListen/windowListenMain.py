@@ -39,6 +39,8 @@ class windowListenMain():
 
         self.frameButtons = tk.Frame(self.frameInfo)
         tk.Button(self.frameButtons, text="Assign Tutor", width=19, command=self.commandAssignTutor).pack(fill="x")
+        tk.Button(self.frameButtons, text="View Students", width=19).pack(fill="x")
+        tk.Button(self.frameButtons, text="Shutdown Server", width=19).pack(fill="x")
 
         self.frameScrollBox.grid(column=0, row=0)
         self.frameTutorBox.grid(column=1, row=0)
@@ -129,6 +131,7 @@ class windowListenMain():
     def commandAssignTutor(self, *args):
         print("Selected Students: ", self.getSelectedStudents())
         self.getSelectedTutor().addStudentArray(self.getSelectedStudents())
+        self.listAssignedTutors.insert(tk.END, self.getSelectedTutor())
         print("\nCurrent Selection: ", self.listStudents.curselection())
         j = 0
         for i in self.listStudents.curselection():
@@ -142,7 +145,13 @@ class windowListenMain():
                 self.students[i].signOut()
                 self.postStudent(self.students[i])
                 try:
+                    tutor = self.students[i].getTutor()
                     self.students[i].getTutor().assignedStudents.remove(self.students[i])
+                    if tutor.assignedStudents == []:
+                        l = self.listAssignedTutors.get(0, tk.END)
+                        for ii, tut in enumerate(l):
+                            if tut == str(tutor):
+                                self.listAssignedTutors.delete(ii)
                 except Exception as e:
                     print(e)
                     list = self.listStudents.get(0, tk.END)

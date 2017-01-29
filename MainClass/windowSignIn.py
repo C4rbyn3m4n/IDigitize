@@ -23,16 +23,17 @@ class windowSignIn():
         self.ScanWindow = windowScan.windowScan(self)
 
     def commandSubmit(self):
-        self.parent.varFinalID.set(self.parent.varID.get())
-        self.parent.varFinalName.set(self.parent.varName.get())
-        self.parent.master.unbind('<Return>')
+        if self.parent.varID.get() != "ID" and self.parent.varID.get() != "":
+            if self.parent.varName.get() != "Name" and self.parent.varName.get() != "":
+                self.parent.varFinalID.set(self.parent.varID.get())
+                self.parent.varFinalName.set(self.parent.varName.get())
+                self.parent.master.unbind('<Return>')
 
-        print(self.parent.varFinalID.get())
-        print(self.parent.varFinalName.get())
+                print(self.parent.varFinalID.get())
+                print(self.parent.varFinalName.get())
 
-        self.frameSignIn.pack_forget()
-        self.selectTeacherWindow = windowClassSelect.windowClassSelect(self)
-
+                self.frameSignIn.pack_forget()
+                self.selectTeacherWindow = windowClassSelect.windowClassSelect(self)
 
     def commandCancel(self):
         # Clear final variables

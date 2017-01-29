@@ -68,7 +68,7 @@ class windowClassSelect():
                     teachers.append(i[j])
                 return teachers
         else:
-            return ["one", "two"]
+            return ["Teachers"]
 
     def commandSubmit(self):
         if not self.varDefaultTeacher.get() == "Teachers" and not self.varDefaultClass.get() == "Classes":
