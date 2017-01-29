@@ -8,6 +8,7 @@ class windowListenMain():
     def __init__(self, parent):
         self.parent = parent
         self.students = []
+        self.backUpStudents = []
         self.arrayClassTeachers = []
         self.tutors = []
         self.queueServer = queue.Queue()
@@ -129,6 +130,16 @@ class windowListenMain():
         self.getSelectedTutor().addStudentArray(self.getSelectedStudents())
         for i in self.listStudents.curselection():
             self.listStudents.delete(i)
+
+    def signOutStudent(self, student):
+        for i, stu in enumerate(self.students):
+            if str(stu) == student:
+                self.students[i].signOut()
+                self.backUpStudents.append(self.students[i])
+                self.students.remove(self.students[i])
+                print(self.students)
+
+        print("Signout: " + student)
 
     def testSelection(self, *args):
         print(self.listStudents.curselection())

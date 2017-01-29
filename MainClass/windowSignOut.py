@@ -1,6 +1,8 @@
 import tkinter as tk
 
-from MainClass import windowScan
+import windowScan
+import dataStudent
+from client import client
 
 
 class windowSignOut():
@@ -21,9 +23,11 @@ class windowSignOut():
         self.ScanWindow = windowScan.windowScan(self)
 
     def commandSubmit(self):
-        self.parent.varFinalID.set(self.parent.varID.get())
-        self.parent.varFinalName.set(self.parent.varName.get())
+        student = dataStudent.dataStudent()
+        student.setID(self.parent.varID.get())
+        student.setName(self.parent.varName.get())
 
+        client().signOut(student)
         # the rest of the sign out code goes here
         #
         #

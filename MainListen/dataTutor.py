@@ -17,4 +17,5 @@ class Tutor():
     def addStudentArray(self, arrayStudents):
         for student in arrayStudents:
             self.assignedStudents.appent(student)
+            student.setTutor(self)
 

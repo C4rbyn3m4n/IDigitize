@@ -49,5 +49,20 @@ class client():
         data = s.recv(4096)
         return pickle.loads(data)
 
+    def signOut(self, student):
+        try:
+            s = self.connectToServer()
+        except Exception as e:
+            print(e)
+        s.send(bytes("SIGNOUT", "UTF-8"))
+        data = s.recv(1024).decode("UTF-8")
+        if not data == "200":
+            print("Data: ", data)
+            raise Exception("Failed to signout")
+        s.send(bytes(str(student), "UTF-8"))
+        if not s.recv(1024).decode("UTF-8") == "200":
+            print("Data: ", data)
+            raise Exception("Failed to send Signout")
+
 
 

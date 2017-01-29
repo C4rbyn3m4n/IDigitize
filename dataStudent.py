@@ -1,4 +1,4 @@
-
+import time
 
 class dataStudent():
     def __init__(self, Name="", ID="", Class="", Teacher="", SignIn="", SignOut="", Tutor=""):
@@ -27,6 +27,9 @@ class dataStudent():
 
     def setSignOut(self, SignOut):
         self.SignOut = SignOut
+
+    def signIn(self):
+        self.SignIn = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
     def setTutor(self, tutor):
         self.Tutor = tutor
@@ -64,3 +67,11 @@ class dataStudent():
                "    SignIn Time: " + self.SignIn + "\n" \
                "    SignOut Time: " + self.SignOut + "\n"
         return temp
+
+    def signOut(self):
+        try:
+            self.Tutor.remove(self)
+        except Exception:
+            pass
+        self.Tutor = ""
+        self.SignOut = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
