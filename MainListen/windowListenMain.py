@@ -25,7 +25,7 @@ class windowListenMain():
         tk.Label(self.frameScrollBox, text="Pending Students").pack()
         self.scrollStudents = tk.Scrollbar(self.frameScrollBox)
         self.scrollStudents.pack(side=tk.RIGHT, fill=tk.Y)
-        self.listStudents = tk.Listbox(self.frameScrollBox, yscrollcommand=self.scrollStudents.set, selectmode=tk.EXTENDED)
+        self.listStudents = tk.Listbox(self.frameScrollBox, yscrollcommand=self.scrollStudents.set, exportselection=0, selectmode=tk.EXTENDED)
         self.listStudents.pack(side=tk.LEFT, fill=tk.BOTH)
         self.scrollStudents.config(command=self.listStudents.yview)
 
@@ -33,12 +33,12 @@ class windowListenMain():
         tk.Label(self.frameTutorBox, text="Tutors").pack()
         self.scrollTutors = tk.Scrollbar(self.frameTutorBox)
         self.scrollTutors.pack(side=tk.RIGHT, fill=tk.Y)
-        self.listTutors = tk.Listbox(self.frameTutorBox, yscrollcommand=self.scrollTutors.set)
+        self.listTutors = tk.Listbox(self.frameTutorBox, yscrollcommand=self.scrollTutors.set, exportselection=0)
         self.listTutors.pack(side=tk.LEFT, fill=tk.BOTH)
         self.scrollTutors.config(command=self.listTutors.yview)
 
         self.frameButtons = tk.Frame(self.frameInfo)
-        tk.Button(self.frameButtons, text="Assign Tutor", width=19).pack(fill="x")
+        tk.Button(self.frameButtons, text="Assign Tutor", width=19, command=self.commandAssignTutor).pack(fill="x")
 
         self.frameScrollBox.grid(column=0, row=0)
         self.frameTutorBox.grid(column=1, row=0)
@@ -126,10 +126,15 @@ class windowListenMain():
     def getSelectedTutor(self):
         return self.tutors[self.getTutorIndex(self.listTutors.get(self.listTutors.curselection()))]
 
-    def commandAssignTutor(self):
+    def commandAssignTutor(self, *args):
+        print("Selected Students: ", self.getSelectedStudents())
         self.getSelectedTutor().addStudentArray(self.getSelectedStudents())
+        print("\nCurrent Selection: ", self.listStudents.curselection())
+        j = 0
         for i in self.listStudents.curselection():
-            self.listStudents.delete(i)
+            print("Iteration: ", i)
+            self.listStudents.delete(i - j)
+            j += 1
 
     def signOutStudent(self, student):
         for i, stu in enumerate(self.students):
