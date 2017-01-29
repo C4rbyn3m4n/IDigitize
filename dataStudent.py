@@ -70,3 +70,4 @@ class dataStudent():
 
     def signOut(self):
         self.SignOut = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+

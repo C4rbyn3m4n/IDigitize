@@ -140,6 +140,7 @@ class windowListenMain():
         for i, stu in enumerate(self.students):
             if str(stu) == student:
                 self.students[i].signOut()
+                self.postStudent(self.students[i])
                 try:
                     self.students[i].getTutor().assignedStudents.remove(self.students[i])
                 except Exception as e:
@@ -155,6 +156,24 @@ class windowListenMain():
                 print("Backup students: ", self.backUpStudents)
 
         print("Signout: " + student)
+
+    def postStudent(self, student):
+
+        htmlLink = "https://docs.google.com/forms/d/e/1FAIpQLSfFjNquxPle7okMntGlut45qzzcQhCUiRIlLns61fB2g3R_og/formResponse"
+        entryLocation = ["463571797", "2140010094", "1770277963", "995158690", "343862984", "1896892163"]
+        data = {}
+
+
+        data["entry." + entryLocation[0]] = student.getName()
+        data["entry." + entryLocation[1]] = student.getID()
+        data["entry." + entryLocation[2]] = student.getClass()
+        data["entry." + entryLocation[3]] = student.getTeacher()
+        data["entry." + entryLocation[4]] = student.getSignIn()
+        data["entry." + entryLocation[5]] = student.getSignOut()
+        data["entry." + entryLocation[6]] = student.getTutor()
+        data["submit"] = "Submit"
+
+        requests.post(htmlLink, data=data)
 
     def testSelection(self, *args):
         print(self.listStudents.curselection())
