@@ -135,9 +135,19 @@ class windowListenMain():
         for i, stu in enumerate(self.students):
             if str(stu) == student:
                 self.students[i].signOut()
+                try:
+                    self.students[i].getTutor().assignedStudents.remove(self.students[i])
+                except Exception as e:
+                    print(e)
+                    list = self.listStudents.get(0, tk.END)
+                    print(list)
+                    for ii, stu2 in enumerate(list):
+                        if stu2 == student:
+                            self.listStudents.delete(ii, ii+1)
                 self.backUpStudents.append(self.students[i])
                 self.students.remove(self.students[i])
-                print(self.students)
+                print("Students Array: ", self.students)
+                print("Backup students: ", self.backUpStudents)
 
         print("Signout: " + student)
 

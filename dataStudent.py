@@ -69,9 +69,4 @@ class dataStudent():
         return temp
 
     def signOut(self):
-        try:
-            self.Tutor.remove(self)
-        except Exception:
-            pass
-        self.Tutor = ""
         self.SignOut = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
