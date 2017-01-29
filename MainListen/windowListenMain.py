@@ -160,9 +160,8 @@ class windowListenMain():
     def postStudent(self, student):
 
         htmlLink = "https://docs.google.com/forms/d/e/1FAIpQLSfFjNquxPle7okMntGlut45qzzcQhCUiRIlLns61fB2g3R_og/formResponse"
-        entryLocation = ["463571797", "2140010094", "1770277963", "995158690", "343862984", "1896892163"]
+        entryLocation = ["654751164", "463571797", "2140010094", "1770277963", "995158690", "343862984", "1896892163"]
         data = {}
-
 
         data["entry." + entryLocation[0]] = student.getName()
         data["entry." + entryLocation[1]] = student.getID()
