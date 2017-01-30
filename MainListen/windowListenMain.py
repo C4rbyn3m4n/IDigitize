@@ -298,3 +298,18 @@ class windowListenMain():
 
     def StudentsSignedIn(self):
         print("hi")
+        # creates window
+        self.studentsLeftTK = tk.Tk()
+        self.studentsLeftTK.resizable(0, 0)
+
+        # set window title
+        self.studentsLeftTK.title("Shutdown")
+        self.studentsLeftTK.lift()
+        self.studentsLeftTK.attributes("-topmost", True)
+        self.studentsLeftTK.after(1, lambda: self.studentsLeftTK.focus_force())
+
+        # makes a frame on tk window
+        self.studentsLeftFrame = tk.Frame(self.studentsLeftTK)
+        self.studentsLeftFrame.pack()
+
+        self.studentsLeftTK.mainloop()
