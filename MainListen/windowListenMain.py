@@ -39,7 +39,7 @@ class windowListenMain():
 
         self.frameButtons = tk.Frame(self.frameInfo)
         tk.Button(self.frameButtons, text="Assign Tutor", width=19, command=self.commandAssignTutor).pack(fill="x")
-        tk.Button(self.frameButtons, text="View Students", width=19).pack(fill="x")
+        tk.Button(self.frameButtons, text="View Students", width=19, command=self.StudentsSignedIn).pack(fill="x")
         tk.Button(self.frameButtons, text="Shutdown Server", width=19, command=self.askForShutDown).pack(fill="x")
 
         self.frameScrollBox.grid(column=0, row=0)
@@ -264,3 +264,5 @@ class windowListenMain():
         self.shutdownTK.destroy()
         self.parent.destroy()
 
+    def StudentsSignedIn(self):
+        print("hi")

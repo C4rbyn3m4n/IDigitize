@@ -28,10 +28,9 @@ class windowSignOut():
         student.setName(self.parent.varName.get())
 
         client().signOut(student)
-        # the rest of the sign out code goes here
-        #
-        #
-        #
+
+
+
 
         self.frameSignOut.destroy()
         self.parent.frameMain.pack()
