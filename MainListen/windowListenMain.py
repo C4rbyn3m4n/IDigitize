@@ -40,7 +40,7 @@ class windowListenMain():
         self.frameButtons = tk.Frame(self.frameInfo)
         tk.Button(self.frameButtons, text="Assign Tutor", width=19, command=self.commandAssignTutor).pack(fill="x")
         tk.Button(self.frameButtons, text="View Students", width=19).pack(fill="x")
-        tk.Button(self.frameButtons, text="Shutdown Server", width=19).pack(fill="x")
+        tk.Button(self.frameButtons, text="Shutdown Server", width=19, command=self.askForShutDown).pack(fill="x")
 
         self.frameScrollBox.grid(column=0, row=0)
         self.frameTutorBox.grid(column=1, row=0)
@@ -226,3 +226,41 @@ class windowListenMain():
             if line != "":
                 self.tutors.append(Tutor(line))
                 self.listTutors.insert(tk.END, line)
+
+    def askForShutDown(self):
+        # creates window
+        self.shutdownTK = tk.Tk()
+        self.shutdownTK.resizable(0, 0)
+
+        # set window title
+        self.shutdownTK.title("Shutdown")
+        self.shutdownTK.lift()
+        self.shutdownTK.attributes("-topmost", True)
+        self.shutdownTK.after(1, lambda: self.shutdownTK.focus_force())
+
+
+        # makes a frame on tk window
+        self.shutdownFrame = tk.Frame(self.shutdownTK)
+
+
+        # makes lable
+        self.labelShutDown = tk.Label(self.shutdownFrame, text="Are you sure you want to shutdown?")
+        self.labelShutDown.pack()
+
+        #makes buttons
+        self.frameButtons = tk.Frame(self.shutdownFrame)
+        self.buttonOkay = tk.Button(self.frameButtons, text="OK", command=self.commandShutdown, height=3, width=10)
+        self.buttonOkay.pack(side=tk.LEFT)
+        self.shutdownTK.bind('<Return>', lambda event: self.commandShutdown())
+        self.frameButtons.pack()
+        tk.Button(self.frameButtons, text="Cancel", height=3, width=10, command=lambda: self.shutdownTK.destroy()).pack(side=tk.RIGHT)
+        self.shutdownFrame.pack()
+
+        self.shutdownTK.mainloop()
+
+    def commandShutdown(self):
+        for i, stu in enumerate(self.students):
+            self.postStudent(self.students[i])
+        self.shutdownTK.destroy()
+        self.parent.destroy()
+
