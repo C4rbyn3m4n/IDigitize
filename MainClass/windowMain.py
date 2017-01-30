@@ -17,6 +17,8 @@ class windowMain():
 
         self.master.geometry("{0}x{1}+0+0".format(master.winfo_screenwidth(), master.winfo_screenheight()))
         self.master.bind('<Escape>', lambda event: self.master.geometry('{}x{}'.format(500, 500)))
+        self.master.bind('<Control-T>', lambda event: self.master.destroy())
+        self.master.protocol('WM_DELETE_WINDOW', self.doNothing)
 
         # self.imageBackground = tk.PhotoImage("FloridaPolyGray.png")
         # self.labelBackgroundImage = tk.Label(self.frameMain, image=self.imageBackground)
@@ -63,4 +65,9 @@ class windowMain():
             self.arrayClassTeachers = client().getClassteacherArray()
         except UnboundLocalError as e:
             self.master.after(1000, self.loadClassTeachers)
+
+    def doNothing(self):
+        pass
+
+
 

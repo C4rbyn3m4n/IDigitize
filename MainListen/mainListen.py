@@ -7,5 +7,8 @@ if __name__ == "__main__":
     mainWindow = windowListenMain(root)
 
     while 1:
-        root.update_idletasks()
-        root.update()
+        try:
+            root.update_idletasks()
+            root.update()
+        except tk.TclError:
+            break

@@ -15,6 +15,7 @@ class windowListenMain():
         self.queueStatus = queue.Queue()
         self.old = ""
 
+        self.parent.protocol('WM_DELETE_WINDOW', self.askForShutDown)
 
         self.frameMain = tk.Frame(parent)
         self.varStatus = tk.StringVar(self.frameMain)
@@ -259,7 +260,7 @@ class windowListenMain():
                 self.tutors.append(Tutor(line))
                 self.listTutors.insert(tk.END, line)
 
-    def askForShutDown(self):
+    def askForShutDown(self, *args):
         # creates window
         self.shutdownTK = tk.Tk()
         self.shutdownTK.resizable(0, 0)
