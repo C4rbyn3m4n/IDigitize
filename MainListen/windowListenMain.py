@@ -308,6 +308,13 @@ class windowListenMain():
         self.studentsLeftTK.attributes("-topmost", True)
         self.studentsLeftTK.after(1, lambda: self.studentsLeftTK.focus_force())
 
+        self.listStudents = tk.Listbox(self.studentsLeftTK, width=40, yscrollcommand=self.scrollStudents.set, exportselection=0, selectmode=tk.EXTENDED)
+        self.listStudents.pack(side=tk.LEFT, fill=tk.BOTH)
+
+
+        for i, stu in enumerate(self.students):
+            self.listStudents.insert(tk.END, self.students[i].getName())
+
         # makes a frame on tk window
         self.studentsLeftFrame = tk.Frame(self.studentsLeftTK)
         self.studentsLeftFrame.pack()
