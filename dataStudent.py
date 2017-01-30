@@ -57,7 +57,7 @@ class dataStudent():
 
     def __str__(self):
         # return "$%$%" + self.Name + "::" + self.ID + "::" + self.Class + "::" + self.Teacher + "%$%$"
-        return self.Name + " : " + self.ID
+        return self.Name + ", " + self.ID
 
     def toString(self):
         temp = "Name: " + self.Name + "\n" \

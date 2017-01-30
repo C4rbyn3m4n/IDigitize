@@ -13,10 +13,12 @@ class windowListenMain():
         self.tutors = []
         self.queueServer = queue.Queue()
         self.queueStatus = queue.Queue()
+        self.old = ""
 
 
         self.frameMain = tk.Frame(parent)
         self.varStatus = tk.StringVar(self.frameMain)
+        self.varListStudents = tk.StringVar(self.frameMain)
         self.varStatus.set("Status: .....")
         tk.Label(self.frameMain, textvariable=self.varStatus, font=("Times New Roman", 10, "bold")).pack()
         self.frameInfo = tk.Frame(self.frameMain)
@@ -25,7 +27,7 @@ class windowListenMain():
         tk.Label(self.frameScrollBox, text="Pending Students").pack()
         self.scrollStudents = tk.Scrollbar(self.frameScrollBox)
         self.scrollStudents.pack(side=tk.RIGHT, fill=tk.Y)
-        self.listStudents = tk.Listbox(self.frameScrollBox, yscrollcommand=self.scrollStudents.set, exportselection=0, selectmode=tk.EXTENDED)
+        self.listStudents = tk.Listbox(self.frameScrollBox, width=40, yscrollcommand=self.scrollStudents.set, exportselection=0, selectmode=tk.EXTENDED)
         self.listStudents.pack(side=tk.LEFT, fill=tk.BOTH)
         self.scrollStudents.config(command=self.listStudents.yview)
 
@@ -38,9 +40,9 @@ class windowListenMain():
         self.scrollTutors.config(command=self.listTutors.yview)
 
         self.frameButtons = tk.Frame(self.frameInfo)
-        tk.Button(self.frameButtons, text="Assign Tutor", width=19, command=self.commandAssignTutor).pack(fill="x")
-        tk.Button(self.frameButtons, text="View Students", width=19, command=self.StudentsSignedIn).pack(fill="x")
-        tk.Button(self.frameButtons, text="Shutdown Server", width=19, command=self.askForShutDown).pack(fill="x")
+        tk.Button(self.frameButtons, text="Assign Tutor", width=19, command=self.commandAssignTutor).pack()
+        tk.Button(self.frameButtons, text="View Students", width=19, command=self.StudentsSignedIn).pack()
+        tk.Button(self.frameButtons, text="Shutdown Server", width=19, command=self.askForShutDown).pack()
 
         self.frameScrollBox.grid(column=0, row=0)
         self.frameTutorBox.grid(column=1, row=0)
@@ -55,7 +57,17 @@ class windowListenMain():
         self.listAssignedTutors.pack(side=tk.LEFT, fill=tk.BOTH)
         self.scrollAssignedTutors.config(command=self.listAssignedTutors.yview)
 
-        self.frameAssignedTutors.pack()
+        self.frameStudentInfo = tk.Frame(self.frameMain)
+        tk.Label(self.frameStudentInfo, text="Students").pack()
+        # tk.Label(self.frameStudentInfo, textvariable=self.varListStudents).pack()
+        self.scrollTutorStudents = tk.Scrollbar(self.frameStudentInfo)
+        self.scrollTutorStudents.pack(side=tk.RIGHT, fill=tk.Y)
+        self.listTutorStudents = tk.Listbox(self.frameStudentInfo, width=65, yscrollcommand=self.scrollTutorStudents.set)
+        self.listTutorStudents.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.scrollAssignedTutors.config(command=self.listTutorStudents.yview)
+
+        self.frameAssignedTutors.pack(side=tk.LEFT)
+        self.frameStudentInfo.pack()
         self.frameMain.pack()
 
         self.addTutors()
@@ -64,6 +76,7 @@ class windowListenMain():
         self.varStatus.set("Status: Server Started")
         self.frameMain.after(1, self.checkQueue)
         self.frameMain.after(2, self.checkStatusQueue)
+        self.frameMain.after(3, self.checkTutorList)
         self.parent.bind('<Return>', self.testSelection)
 
         self.updateClassesAndTutors()
@@ -91,19 +104,31 @@ class windowListenMain():
             pass
         self.frameMain.after(100, self.checkStatusQueue)
 
+    def checkTutorList(self):
+        if len(self.listAssignedTutors.curselection()) > 0 and self.listAssignedTutors.curselection() != self.old:
+            self.old = self.listAssignedTutors.curselection()
+            sel = self.listAssignedTutors.get(self.listAssignedTutors.curselection())
+            self.listTutorStudents.delete(0, tk.END)
+            for i, tutor in enumerate(self.tutors):
+                if str(tutor) == sel:
+                    selectedTutor = self.tutors[i]
+            for i in selectedTutor.assignedStudents:
+                self.listTutorStudents.insert(tk.END, i.Class + "- " + str(i))
+        self.frameMain.after(100, self.checkTutorList)
+
     def addTutors(self):
         for tutor in self.tutors:
             self.listTutors.insert(tk.END, tutor)
 
     def addStudent(self, student):
         # self.listStudents.insert(tk.END, student.getName() + "  " + student.getSignIn())
-        self.listStudents.insert(tk.END, student)
+        self.listStudents.insert(tk.END, student.getClass() + "- " + str(student))
         self.students.append(student)
 
     def getStudentIndex(self, studentString):
         for i, student in enumerate(self.students):
             print("Stored name of student: ", str(student), "\n Compared to\nInputted Student:", studentString)
-            if str(student) == studentString:
+            if str(student) in studentString:
                 return i
         return -500
 
@@ -130,8 +155,9 @@ class windowListenMain():
 
     def commandAssignTutor(self, *args):
         print("Selected Students: ", self.getSelectedStudents())
+        if len(self.getSelectedTutor().assignedStudents) == 0:
+            self.listAssignedTutors.insert(tk.END, self.getSelectedTutor())
         self.getSelectedTutor().addStudentArray(self.getSelectedStudents())
-        self.listAssignedTutors.insert(tk.END, self.getSelectedTutor())
         print("\nCurrent Selection: ", self.listStudents.curselection())
         j = 0
         for i in self.listStudents.curselection():
@@ -141,7 +167,7 @@ class windowListenMain():
 
     def signOutStudent(self, student):
         for i, stu in enumerate(self.students):
-            if str(stu) == student:
+            if student in str(stu):
                 self.students[i].signOut()
                 self.postStudent(self.students[i])
                 try:
@@ -157,8 +183,14 @@ class windowListenMain():
                     list = self.listStudents.get(0, tk.END)
                     print(list)
                     for ii, stu2 in enumerate(list):
-                        if stu2 == student:
-                            self.listStudents.delete(ii, ii+1)
+                        if student in stu2:
+                            self.listStudents.delete(ii)
+                print(self.listTutorStudents.get(0, tk.END))
+                for jjj, iii in enumerate(self.listTutorStudents.get(0, tk.END)):
+                    print("III: {}     jjj: {}".format(iii, jjj))
+                    print("String Student: ", str(student))
+                    if str(student) in iii:
+                        self.listTutorStudents.delete(jjj)
                 self.backUpStudents.append(self.students[i])
                 self.students.remove(self.students[i])
                 print("Students Array: ", self.students)
