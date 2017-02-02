@@ -38,6 +38,7 @@ class windowSignOut():
         # Opens a scan window to get card info
         self.ScanWindow = windowScan.windowScan(self)
 
+    # Activated by the Submit key
     def commandSubmit(self):
         student = dataStudent.dataStudent()
         student.setID(self.parent.varID.get())

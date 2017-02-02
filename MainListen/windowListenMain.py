@@ -3,6 +3,7 @@ import serverThread
 import queue
 import requests
 from dataTutor import *
+from windowAssignClass import windowAssignClass
 
 class windowListenMain():
     def __init__(self, parent):
@@ -14,6 +15,7 @@ class windowListenMain():
         self.queueServer = queue.Queue()
         self.queueStatus = queue.Queue()
         self.old = ""
+        self.timeHasPassed = False
 
         self.parent.protocol('WM_DELETE_WINDOW', self.askForShutDown)
 
@@ -43,6 +45,7 @@ class windowListenMain():
         self.frameButtons = tk.Frame(self.frameInfo)
         tk.Button(self.frameButtons, text="Assign Tutor", width=19, command=self.commandAssignTutor).pack()
         tk.Button(self.frameButtons, text="View Students", width=19, command=self.StudentsSignedIn).pack()
+        tk.Button(self.frameButtons, text="Sign out Student", width=19).pack()
         tk.Button(self.frameButtons, text="Shutdown Server", width=19, command=self.askForShutDown).pack()
 
         self.frameScrollBox.grid(column=0, row=0)
@@ -106,8 +109,9 @@ class windowListenMain():
         self.frameMain.after(100, self.checkStatusQueue)
 
     def checkTutorList(self):
-        if len(self.listAssignedTutors.curselection()) > 0 and self.listAssignedTutors.curselection() != self.old:
+        if len(self.listAssignedTutors.curselection()) > 0 and (self.listAssignedTutors.curselection() != self.old or self.timeHasPassed):
             self.old = self.listAssignedTutors.curselection()
+            self.timeHasPassed = False
             sel = self.listAssignedTutors.get(self.listAssignedTutors.curselection())
             self.listTutorStudents.delete(0, tk.END)
             for i, tutor in enumerate(self.tutors):
@@ -116,6 +120,10 @@ class windowListenMain():
             for i in selectedTutor.assignedStudents:
                 self.listTutorStudents.insert(tk.END, i.Class + "- " + str(i))
         self.frameMain.after(100, self.checkTutorList)
+        self.frameMain.after(5000, self.timePassed)
+
+    def timePassed(self):
+        self.timeHasPassed = True
 
     def addTutors(self):
         for tutor in self.tutors:
@@ -156,6 +164,10 @@ class windowListenMain():
 
     def commandAssignTutor(self, *args):
         print("Selected Students: ", self.getSelectedStudents())
+        for i in self.getSelectedStudents():
+            if i.getClass() == "OTHER":
+                windowAssignClass(i, self)
+                print("Hello")
         if len(self.getSelectedTutor().assignedStudents) == 0:
             self.listAssignedTutors.insert(tk.END, self.getSelectedTutor())
         self.getSelectedTutor().addStudentArray(self.getSelectedStudents())
@@ -173,6 +185,7 @@ class windowListenMain():
                 self.postStudent(self.students[i])
                 try:
                     tutor = self.students[i].getTutor()
+                    print("Tutor being used: ", tutor)
                     self.students[i].getTutor().assignedStudents.remove(self.students[i])
                     if tutor.assignedStudents == []:
                         l = self.listAssignedTutors.get(0, tk.END)

@@ -13,6 +13,7 @@ class windowClassSelect():
         self.varDefaultClass = tk.StringVar(self.frameClassSelect)
         self.varDefaultClass.set("Classes")
         self.classes = self.getClasses()
+        self.classes.append("OTHER")
         self.menuClasses = tk.OptionMenu(self.frameClassSelect, self.varDefaultClass, *self.classes,
                                          command=self.commandShowTeachers)
         self.menuClassesMenu = self.menuClasses.children["menu"]
@@ -66,9 +67,9 @@ class windowClassSelect():
                 teachers = []
                 for j in range(1, len(i)):
                     teachers.append(i[j])
+                teachers.append("OTHER")
                 return teachers
-        else:
-            return ["Teachers"]
+        return ["Teachers", "OTHER"]
 
     def commandSubmit(self):
         if not self.varDefaultTeacher.get() == "Teachers" and not self.varDefaultClass.get() == "Classes":
