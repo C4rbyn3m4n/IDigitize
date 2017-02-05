@@ -63,8 +63,17 @@ class windowSignOut():
         self.parent.frameMain.pack()
 
     def readCard(self, cardInfo):
-        # self.swipe.destroy()
-        # TODO: Readcard data
-        print(cardInfo)
+        start = cardInfo.find("^")
+        end = cardInfo.find("^", start + 1)
+
+        name = cardInfo[start + 1: end]
+        name = name.replace("/", ", ")
+        name = name.rstrip()
+
+        end = cardInfo.find("?", end)
+        id = cardInfo[end - 4:end]
+
+        self.parent.varID.set(id)
+        self.parent.varName.set(name)
 
 
