@@ -45,7 +45,6 @@ class windowListenMain():
         self.frameButtons = tk.Frame(self.frameInfo)
         tk.Button(self.frameButtons, text="Assign Tutor", width=19, command=self.commandAssignTutor).pack()
         tk.Button(self.frameButtons, text="View Students", width=19, command=self.StudentsSignedIn).pack()
-        tk.Button(self.frameButtons, text="Sign out Student", width=19).pack()
         tk.Button(self.frameButtons, text="Shutdown Server", width=19, command=self.askForShutDown).pack()
 
         self.frameScrollBox.grid(column=0, row=0)
@@ -209,6 +208,13 @@ class windowListenMain():
                 self.students.remove(self.students[i])
                 print("Students Array: ", self.students)
                 print("Backup students: ", self.backUpStudents)
+        try:
+            for i, list in enumerate(self.listAllStudents.get(0, tk.END)):
+                if student in list:
+                    self.listAllStudents.delete(i)
+        except Exception as e:
+            print(e)
+
 
         print("Signout: " + student)
 
@@ -317,20 +323,37 @@ class windowListenMain():
         self.studentsLeftTK.resizable(0, 0)
 
         # set window title
-        self.studentsLeftTK.title("Shutdown")
+        self.studentsLeftTK.title("Students")
         self.studentsLeftTK.lift()
         self.studentsLeftTK.attributes("-topmost", True)
         self.studentsLeftTK.after(1, lambda: self.studentsLeftTK.focus_force())
 
-        self.listStudents = tk.Listbox(self.studentsLeftTK, width=40, yscrollcommand=self.scrollStudents.set, exportselection=0, selectmode=tk.EXTENDED)
-        self.listStudents.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.studentsLeftFrame = tk.Frame(self.studentsLeftTK)
+
+        self.scrollAllStudents = tk.Scrollbar(self.studentsLeftFrame)
+        self.scrollAllStudents.pack(side=tk.RIGHT, fill=tk.Y)
+        self.listAllStudents = tk.Listbox(self.studentsLeftFrame, width=40, yscrollcommand=self.scrollAllStudents.set, exportselection=0, selectmode=tk.EXTENDED)
+        self.listAllStudents.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.scrollAllStudents.config(command=self.listAllStudents.yview)
+
+
 
 
         for i, stu in enumerate(self.students):
-            self.listStudents.insert(tk.END, self.students[i].getName())
+            self.listAllStudents.insert(tk.END, str(self.students[i]))
 
         # makes a frame on tk window
-        self.studentsLeftFrame = tk.Frame(self.studentsLeftTK)
+
         self.studentsLeftFrame.pack()
+
+        self.frameAllStudentsButtons = tk.Frame(self.studentsLeftTK)
+        try:
+            tk.Button(self.frameAllStudentsButtons, text="Sign Out", command=lambda *event: \
+                self.signOutStudent(self.listAllStudents.get(self.listAllStudents.curselection()))).pack(side=tk.LEFT)
+        except tk.TclError:
+            pass
+        tk.Button(self.frameAllStudentsButtons, text="Close", command=lambda *event: \
+                  self.studentsLeftTK.destroy()).pack(side=tk.RIGHT)
+        self.frameAllStudentsButtons.pack()
 
         self.studentsLeftTK.mainloop()
