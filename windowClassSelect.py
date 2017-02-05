@@ -1,7 +1,7 @@
 import tkinter as tk
 
+import client as client
 import dataStudent
-import MainClass.client as client
 
 
 class windowClassSelect():

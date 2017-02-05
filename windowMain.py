@@ -1,8 +1,8 @@
 import tkinter as tk
-import windowSignIn
-from client import client
 
-from MainClass import windowSignOut
+import windowSignIn
+import windowSignOut
+from client import client
 
 
 class windowMain():

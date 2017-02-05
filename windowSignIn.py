@@ -1,8 +1,7 @@
 import tkinter as tk
 
 import windowClassSelect
-
-from MainClass import windowScan
+import windowScan
 
 
 class windowSignIn():
