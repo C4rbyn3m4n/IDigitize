@@ -39,6 +39,9 @@ class windowSignIn():
         # Clear final variables
         self.parent.varFinalID.set("")
         self.parent.varFinalName.set("")
+        self.parent.varName.set("Name")
+        self.parent.varID.set("ID")
+
         self.frameSignIn.destroy()
         self.parent.frameMain.pack()
 
